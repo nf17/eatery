@@ -34,11 +34,11 @@ class APIManager {
     /// Private init to prevent public initialization
     private init() {}
     
-    
+
     
     // MARK: - Request Methods
     
-    private func request<O, T>(method: Alamofire.Method, params: [String: AnyObject], router: Router, map: O -> T?, completion: (T -> Void)?) {
+    private func request<O, T>(method: Alamofire.Method, params: [String: AnyObject], router: Router, map: O -> T?, completion: (error: NSError?, T?) -> Void) {
         Alamofire.request(method, router, parameters: params)
             .responseJSON { response in
                 if let error = response.result.error {
@@ -46,7 +46,7 @@ class APIManager {
                 }
                 if let json = response.result.value as? O {
                     if let object = map(json) {
-                        completion?(object)
+                        completion(error: nil, object)
                     }
                 }
         }
