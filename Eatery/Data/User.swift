@@ -14,22 +14,30 @@ import SwiftyJSON
  */
 class User {
     
-    static let currentUser = User()
-    private init() {    }
-    
-    init(json: JSON) {
-        
-    }
+    /// The User's primary key
+    var id: Int
     
     /// The User's first name
-    var fname: String!
+    var firstName: String
     
     /// The User's last name
-    var lname: String!
+    var lastName: String
     
-    /// The User's handle name
-    var handle: String!
+    /// Number of friends this User has
+    var friendsCount: Int
+    
+    /// Popularity score
+    var popularityScore: Int
     
     /// The User's phone number
-    var phoneNumber: Int!
+    var phoneNumber: Int
+    
+    init(json: JSON) {
+        id = json[API.UserId].intValue
+        firstName = json[API.UserFirstName].stringValue
+        lastName = json[API.UserLastName].stringValue
+        friendsCount = json[API.UserFriendsCount].intValue
+        popularityScore = json[API.UserPopularity].intValue
+        phoneNumber = json[API.UserPhone].intValue
+    }
 }

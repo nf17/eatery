@@ -11,10 +11,10 @@ import Alamofire
 import SwiftyJSON
 
 private enum Router: URLStringConvertible {
-    static let BaseURLString = "http://localhost"
     
     case Root
     
+    static let BaseURLString = "http://localhost"
     var URLString: String {
         let path: String = {
             switch self {
@@ -26,12 +26,33 @@ private enum Router: URLStringConvertible {
     }
 }
 
-private struct API {
-    // Requests
+struct API {
+    
+    /*          Requests            */
+    
+    // Authentication
     static let SessionCode  = "session_code"
     static let APIKey       = "api_key"
     
-    // Responses
+    // User
+    static let UserId           = "id"
+    static let UserFirstName    = "fname"
+    static let UserLastName     = "lname"
+    static let UserFriendsCount = "friends_count"
+    static let UserPopularity   = "popularity"
+    static let UserPhone        = "phone"
+    
+    // BeaconEvent
+    static let EventId              = "id"
+    static let EventUserId          = "user_id"
+    static let EventTitle           = "title"
+    static let EventActive          = "active"
+    static let EventCreationDate    = "created_at"
+    static let EventUpdatedDate     = "updated_at"
+    
+    /*          Responses           */
+    
+    // Top Level
     static let Data         = "data"
     static let Success      = "success"
 }
