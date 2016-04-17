@@ -40,6 +40,8 @@
 		659B21881C70796600F3B138 /* Eatery Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 659B216A1C70796600F3B138 /* Eatery Watch App.app */; };
 		6E0B505E1CB0B65B0054F600 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0B505D1CB0B65B0054F600 /* Sort.swift */; };
 		65BF07931CC29A1E0078B180 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BF07921CC29A1E0078B180 /* APIManager.swift */; };
+		65E53D931CC4191B00087A57 /* EateryAPIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E53D921CC4191B00087A57 /* EateryAPIKey.swift */; };
+		65E53D951CC41C4900087A57 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E53D941CC41C4900087A57 /* User.swift */; };
 		95434FB71BD8699F003612DB /* ADScreenCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95434F951BD8699F003612DB /* ADScreenCapture.swift */; };
 		95434FC51BD8699F003612DB /* SubmitBugViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95434FB41BD8699F003612DB /* SubmitBugViewController.swift */; };
 		95434FC61BD8699F003612DB /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95434FB51BD8699F003612DB /* Tools.swift */; };
@@ -199,6 +201,8 @@
 		659B21851C70796600F3B138 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6E0B505D1CB0B65B0054F600 /* Sort.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Sort.swift; path = Data/Sort.swift; sourceTree = "<group>"; };
 		65BF07921CC29A1E0078B180 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		65E53D921CC4191B00087A57 /* EateryAPIKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EateryAPIKey.swift; path = /Users/daniel/CUAppDev/EateryAPIKey.swift; sourceTree = "<absolute>"; };
+		65E53D941CC41C4900087A57 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		6E8A627AA2A6DA1D7BB83A8E /* Pods_Eatery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Eatery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B7FDD4784AB7A79D5069FFC /* Pods-Eatery Watch App Extension.internal beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eatery Watch App Extension.internal beta.xcconfig"; path = "Pods/Target Support Files/Pods-Eatery Watch App Extension/Pods-Eatery Watch App Extension.internal beta.xcconfig"; sourceTree = "<group>"; };
 		94AE18508AA0B5D148EEA361 /* Pods-Eatery.internal beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eatery.internal beta.xcconfig"; path = "Pods/Target Support Files/Pods-Eatery/Pods-Eatery.internal beta.xcconfig"; sourceTree = "<group>"; };
@@ -472,6 +476,8 @@
 				C0F182FB1B674DCB00063D77 /* AnalyticsManager.swift */,
 				FAA912BD1BE6A035003475A8 /* Eatery+Extensions.swift */,
 				65BF07921CC29A1E0078B180 /* APIManager.swift */,
+				65E53D941CC41C4900087A57 /* User.swift */,
+				65E53D921CC4191B00087A57 /* EateryAPIKey.swift */,
 				E9CFC0A61C0E44D900ED884A /* Extra Eatery Data */,
 			);
 			path = Data;
@@ -1065,11 +1071,13 @@
 				E9EC97951BFD31B400D06823 /* MenuHeaderView.swift in Sources */,
 				E978DF851BEA8108000CD44F /* UnderlineTabBarView.swift in Sources */,
 				1D07D27B1C86F9D400FABB7B /* UIScreen+Device.swift in Sources */,
+				65E53D951CC41C4900087A57 /* User.swift in Sources */,
 				C0F182FC1B674DCB00063D77 /* AnalyticsManager.swift in Sources */,
 				E9EC978F1BFD1B4B00D06823 /* EateriesGridViewController.swift in Sources */,
 				E9CFC0AE1C0E545700ED884A /* EateriesCollectionViewHeaderView.swift in Sources */,
 				D1EE777A1C702469001823D8 /* String+Manipulation.swift in Sources */,
 				C0497B131B64AA1800AC1C6C /* UIColor+ColorScheme.swift in Sources */,
+				65E53D931CC4191B00087A57 /* EateryAPIKey.swift in Sources */,
 				95434FC61BD8699F003612DB /* Tools.swift in Sources */,
 				E93CD41B1BE67DB000089CE5 /* MealTableViewController.swift in Sources */,
 				95434FB71BD8699F003612DB /* ADScreenCapture.swift in Sources */,
