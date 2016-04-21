@@ -133,8 +133,7 @@ class APIManager {
             ]
         ]
         makeRequest(.POST, params: authParameters(withParameters: parameters), router: .SignUp) { (success, json, error) in
-            // TODO: use failable initializer
-            completion(user: json == nil ? nil : User(json: json![API.User]), error: error)
+            completion(user: User(json: json?[API.User] ?? nil), error: error)
         }
     }
     
