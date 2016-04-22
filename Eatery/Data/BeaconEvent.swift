@@ -37,8 +37,7 @@ struct BeaconEvent {
         active = json[API.EventActive].boolValue
         
         let formatter = NSDateFormatter()
-        formatter.dateFormat = "2016-04-22T16:14:07-04:00"
-        formatter.dateFormat = "yyyy-MM-ddThh:mm:ss-ZZZZZ"
+        formatter.dateFormat = APIDateFormat
         creationDate = formatter.dateFromString(json[API.EventCreationDate].stringValue)!
         creationDate = NSDate()
         updatedDate = NSDate()

@@ -71,6 +71,8 @@ struct API {
     static let Errors       = "errors"
 }
 
+let APIDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSS'Z'"
+
 private var SessionCode: String? {
     get {
         let defaults = NSUserDefaults.standardUserDefaults()
@@ -193,7 +195,9 @@ class APIManager {
      */
     static func createEvent(title: String, completion: (event: BeaconEvent?, error: NSError?) -> Void) {
         let parameters = [
-            API.EventTitle : title
+            API.Event : [
+                API.EventTitle : title
+            ]
         ]
         makeRequest(.POST, params: authParameters(withParameters: parameters), router: .CreateEvent) { (json, error) in
             var event: BeaconEvent? = nil
