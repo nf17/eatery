@@ -83,8 +83,15 @@ class EateriesGridViewController: UIViewController, MenuButtonsDelegate {
 //                    print(error)
 //                    print(user)
 //                }
-            APIManager.logIn("3984731833", password: "strawberrycupcake") { error in
+//            APIManager.logIn("3984731833", password: "strawberrycupcake") { error in
+//                print(error)
+//            }
+//            APIManager.logOut() { error in
+//                print(error)
+//            }
+            APIManager.createEvent("I need friends") { (event, error) in
                 print(error)
+                print(event?.id)
             }
 			Analytics.trackPullToRefresh()
                 self?.loadData(true) {

@@ -18,7 +18,7 @@ private enum Router: URLStringConvertible {
     case Logout
     case CreateEvent
     
-    static let BaseURLString = "http://10.148.10.117:3000/api/v1"
+    static let BaseURLString = "http://10.145.151.164:3000/api/v1"
     
     var URLString: String {
         let path: String = {
@@ -41,8 +41,6 @@ private enum Router: URLStringConvertible {
 
 struct API {
     
-    /*          Requests            */
-    
     // Authentication
     static let SessionCode  = "session_code"
     static let APIKey       = "api_key"
@@ -59,6 +57,7 @@ struct API {
 
     
     // BeaconEvent
+    static let Event                = "event"
     static let EventId              = "id"
     static let EventUserId          = "user_id"
     static let EventTitle           = "title"
@@ -66,15 +65,10 @@ struct API {
     static let EventCreationDate    = "created_at"
     static let EventUpdatedDate     = "updated_at"
     
-    /*          Responses           */
-    
-    // Common
+    // Resposes
     static let Data         = "data"
     static let Success      = "success"
     static let Errors       = "errors"
-    
-    // Login
-    static let Session      = "session"
 }
 
 private var SessionCode: String? {
@@ -101,7 +95,7 @@ class APIManager {
     private static func authParameters(withParameters parameters: [String : AnyObject] = [:]) -> [String : AnyObject] {
         var dict: [String : AnyObject] = [API.APIKey : EateryAPIKey]
         if SessionCode != nil {
-            dict[API.Session] = [API.SessionCode : SessionCode!]
+            dict[API.SessionCode] = SessionCode
         }
         for (key, value) in parameters {
             dict[key] = value
@@ -176,13 +170,10 @@ class APIManager {
      - parameters:
         - completion: Completion handler for the request. If the sign out succeeds, error is nil. Otherwise, error is the error that occurred.
      
-     - Important:
-     This has not been tested.
-     
      */
     static func logOut(completion: (error: NSError?) -> Void) {
         makeRequest(.POST, params: authParameters(), router: .Logout) { (json, error) in
-            if error != nil {
+            if error == nil {
                 SessionCode = nil
             }
             completion(error: error)
@@ -207,7 +198,7 @@ class APIManager {
         makeRequest(.POST, params: authParameters(withParameters: parameters), router: .CreateEvent) { (json, error) in
             var event: BeaconEvent? = nil
             if error == nil {
-                // Make event object
+                event = BeaconEvent(json: json!)
             }
             completion(event: event, error: error)
         }
