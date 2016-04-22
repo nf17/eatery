@@ -16,6 +16,7 @@ private enum Router: URLStringConvertible {
     case SignUp
     case Login
     case Logout
+    case CreateEvent
     
     static let BaseURLString = "http://10.148.10.117:3000/api/v1"
     
@@ -30,6 +31,8 @@ private enum Router: URLStringConvertible {
                 return "/login"
             case .Logout:
                 return "/logout"
+            case .CreateEvent:
+                return "/events/create"
             }
         }()
         return Router.BaseURLString + path
@@ -160,7 +163,7 @@ class APIManager {
         ]
         makeRequest(.POST, params: authParameters(withParameters: parameters), router: .Login) { (json, error) in
             if error == nil {
-                SessionCode = json![API.Data][API.SessionCode].stringValue
+                SessionCode = json![API.SessionCode].stringValue
             }
             completion(error: error)
         }
@@ -169,6 +172,9 @@ class APIManager {
     /**
      
      Attempts to sign out the current user.
+     
+     - parameters:
+        - completion: Completion handler for the request. If the sign out succeeds, error is nil. Otherwise, error is the error that occurred.
      
      - Important:
      This has not been tested.
@@ -183,9 +189,30 @@ class APIManager {
         }
     }
     
+    // MARK: - Events
     
+    /**
+     
+     Creates a new event with the given title.
+     
+     - parameters:
+        - title:
+        - completion: Completion handler for the request. If the creation is successful, event is the BeaconEvent returned, and error is nil. Otherwise, event is nil and error is the error that occurred.
+     
+     */
+    static func createEvent(title: String, completion: (event: BeaconEvent?, error: NSError?) -> Void) {
+        let parameters = [
+            API.EventTitle : title
+        ]
+        makeRequest(.POST, params: authParameters(withParameters: parameters), router: .CreateEvent) { (json, error) in
+            var event: BeaconEvent? = nil
+            if error == nil {
+                // Make event object
+            }
+            completion(event: event, error: error)
+        }
+    }
     
-    // MARK: - Beacons...
     
     // MARK: - Request Helper Method
     
@@ -206,7 +233,7 @@ class APIManager {
                     let error = NSError(domain: "EateryBackendDomain", code: -99999, userInfo: [kCFErrorLocalizedDescriptionKey : json[API.Data][API.Errors].arrayValue[0].stringValue])
                     completion(json: nil, error: error)
                 }
-                completion(json: json, error: nil)
+                completion(json: json[API.Data], error: nil)
         }
     }
 }
