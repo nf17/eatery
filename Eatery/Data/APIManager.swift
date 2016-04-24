@@ -17,6 +17,8 @@ private enum Router: URLStringConvertible {
     case Login
     case Logout
     case CreateEvent
+    case UpdateEvent(String)
+    case DeleteEvent(String)
     
     static let BaseURLString = "http://10.145.151.164:3000/api/v1"
     
@@ -33,6 +35,10 @@ private enum Router: URLStringConvertible {
                 return "/logout"
             case .CreateEvent:
                 return "/events/create"
+            case .UpdateEvent(let id):
+                return "/events/update/\(id)"
+            case .DeleteEvent(let id):
+                return "/events/delete/\(id)"
             }
         }()
         return Router.BaseURLString + path
@@ -116,7 +122,7 @@ class APIManager {
         - lastName: The user's last name.
         - phone: The user's phone number formatted correctly TODO: How should this be formatted?
         - password: The user's chosen password.
-        - completion: Completion handler for the request. If the user creation was successful, user is the User object created and error is nil. Otherwise, user is nil and error is the error that occurred.
+        - completion: Completion handler for the request. If the user creation was successful, `user` is the User object created and `error` is `nil`. Otherwise, `user` is `nil` and `error` is the error that occurred.
      
      */
     static func signUp(firstName: String, lastName: String, phone: String, password: String, completion: (user: User?, error: NSError?) -> Void) {
@@ -144,7 +150,7 @@ class APIManager {
      - parameters:
         - phone: The phone number formatted correctly TODO: How should this be formatted?
         - password: The password.
-        - completion: Completion handler for the request. If the sign in was successful, error is nil. Otherwise, error is the error that occurred.
+        - completion: Completion handler for the request. If the sign in was successful, `error` is `nil`. Otherwise, `error` is the error that occurred.
      
      - Important:
      This has not been tested.
@@ -170,7 +176,7 @@ class APIManager {
      Attempts to sign out the current user.
      
      - parameters:
-        - completion: Completion handler for the request. If the sign out succeeds, error is nil. Otherwise, error is the error that occurred.
+        - completion: Completion handler for the request. If the sign out succeeds, `error` is `nil`. Otherwise, `error` is the error that occurred.
      
      */
     static func logOut(completion: (error: NSError?) -> Void) {
@@ -186,11 +192,11 @@ class APIManager {
     
     /**
      
-     Creates a new event with the given title.
+     Creates a new `BeaconEvent` with the given title.
      
      - parameters:
-        - title:
-        - completion: Completion handler for the request. If the creation is successful, event is the BeaconEvent returned, and error is nil. Otherwise, event is nil and error is the error that occurred.
+        - title: The title of the `BeaconEvent`
+        - completion: Completion handler for the request. If the creation is successful, `event` is the `BeaconEvent` returned, and `error` is `nil`. Otherwise, `event` is `nil` and `error` is the error that occurred.
      
      */
     static func createEvent(title: String, completion: (event: BeaconEvent?, error: NSError?) -> Void) {
@@ -205,6 +211,34 @@ class APIManager {
                 event = BeaconEvent(json: json!)
             }
             completion(event: event, error: error)
+        }
+    }
+    
+    /**
+     
+     Updates a `BeaconEvent` with the given info.
+     
+     - parameters:
+        - eventID: the `BeaconEvent`'s `id`, which cannot be `nil`
+        - title: (optional) title if changed
+        - ownerID: (optional) owner's `id` if changed
+        - date: (optional) date of the `BeaconEvent` if changed
+        - completion: Completion handler for the request. If the update succeeds, `error` is `nil`. Otherwise, `error` is the error that occurred.
+     
+     */
+    static func updateEvent(eventID: String, title: String?, ownerID: String?, completion: (error: NSError?) -> Void) {
+        var eventParameters = [String : AnyObject]()
+        if let title = title {
+            eventParameters[API.EventTitle] = title
+        }
+        if let ownerID = ownerID {
+            eventParameters[API.EventUserId] = ownerID
+        }
+        let parameters = [
+            API.Event : eventParameters
+        ]
+        makeRequest(.POST, params: parameters, router: .UpdateEvent(eventID)) { (json, error) in
+            completion(error: error)
         }
     }
     
