@@ -20,7 +20,7 @@ private enum Router: URLStringConvertible {
     case UpdateEvent(String)
     case DeleteEvent(String)
     
-    static let BaseURLString = "http://10.145.151.164:3000/api/v1"
+    static let BaseURLString = "http://10.148.7.14:3000/api/v1"
     
     var URLString: String {
         let path: String = {
