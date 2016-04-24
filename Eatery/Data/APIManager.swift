@@ -262,7 +262,7 @@ class APIManager {
      Deletes a `BeaconEvent` with the given `id`.
      
      - parameters:
-        - id: The `id` of the BeaconEvent to be deleted.
+        - id: The `id` of the `BeaconEvent` to be deleted.
         - completion: Completion handler for the request. If the deletion succeeds, `error` is `nil`. Otherwise, `error` is the error that occurred.
      
      */
@@ -272,7 +272,20 @@ class APIManager {
         }
     }
     
-    // MARK: - EventRequests
+    // MARK: - Event Requests
+    
+    /**
+     
+     Creates a `BeaconRequest` with the `BeaconEvent` `id` and the `id` of the `User` being invited.
+     
+     - parameters:
+     - eventID: The `id` of the `BeaconEvent`.
+     - userID: The `id` of the `User` being invited.
+     - completion: Completion handler for the request. If the request succeeds, `request` is the request that was created, and `error` is `nil`. Otherwise, `error` is the error that occurred and `request`.
+     */
+    static func createBeaconRequest(eventID: Int, userID: Int, completion: (error: NSError?) -> Void) {
+        
+    }
     
     
     // MARK: - Request Helper Method
