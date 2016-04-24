@@ -80,6 +80,10 @@ class EateriesGridViewController: UIViewController, MenuButtonsDelegate {
         loadingView.tintColor = UIColor.whiteColor()
         collectionView.dg_addPullToRefreshWithActionHandler({ [weak self] () -> Void in
                 Analytics.trackPullToRefresh()
+            APIManager.sharedInstance.signUp("Lucas", lastName: "Derraugh", phone: "3984731833", password: "strawberrycupcake") { (user, error) in
+                    print(error)
+                    print(user)
+                }
                 self?.loadData(true) {
                     self?.collectionView.dg_stopLoading()
                 }
