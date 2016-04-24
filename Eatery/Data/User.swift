@@ -12,7 +12,7 @@ import SwiftyJSON
 /**
  The shared instance of User is the current logged-in user.
  */
-class User {
+struct User {
     
     /// The User's primary key
     var id: Int

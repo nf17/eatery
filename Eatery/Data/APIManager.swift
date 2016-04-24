@@ -72,7 +72,7 @@ struct API {
     static let EventUpdatedDate     = "updated_at"
     static let EventDate            = "event_time"
     
-    // Resposes
+    // Responses
     static let Data         = "data"
     static let Success      = "success"
     static let Errors       = "errors"
@@ -233,9 +233,6 @@ class APIManager {
         - date: (optional) Date of the `BeaconEvent` if changed.
         - completion: Completion handler for the request. If the update succeeds, `updatedEvent` is the newly updated `BeaconEvent` and `error` is `nil`. Otherwise, `error` is the error that occurred and `updatedEvent` is `nil`.
      
-     - important:
-     This has not been tested.
-     
      */
     static func updateEvent(eventID: Int, title: String?, ownerID: Int?, date: NSDate?, completion: (updatedEvent: BeaconEvent?, error: NSError?) -> Void) {
         var eventParameters = [String : AnyObject]()
@@ -268,15 +265,14 @@ class APIManager {
         - id: The `id` of the BeaconEvent to be deleted.
         - completion: Completion handler for the request. If the deletion succeeds, `error` is `nil`. Otherwise, `error` is the error that occurred.
      
-     - important:
-     This has not been tested.
-     
      */
     static func deleteEvent(id: Int, completion: (error: NSError?) -> Void) {
         makeRequest(.POST, params: authParameters(), router: .DeleteEvent(id)) { (json, error) in
             completion(error: error)
         }
     }
+    
+    // MARK: - EventRequests
     
     
     // MARK: - Request Helper Method
@@ -295,7 +291,7 @@ class APIManager {
                 
                 if !json[API.Success].boolValue {
                     // TODO: Error code, multiple errors
-                    let error = NSError(domain: "EateryBackendDomain", code: -99999, userInfo: [kCFErrorLocalizedDescriptionKey : json[API.Data][API.Errors].arrayValue[0].stringValue])
+                    let error = NSError(domain: "EateryBackendDomain", code: -99999, userInfo: [kCFErrorLocalizedDescriptionKey : json[API.Data][API.Errors].arrayValue.first?.string ?? "Unknown Error"])
                     completion(json: nil, error: error)
                     return
                 }
