@@ -120,7 +120,7 @@ class APIManager {
      - parameters:
         - firstName: The user's first name.
         - lastName: The user's last name.
-        - phone: The user's phone number formatted correctly TODO: How should this be formatted?
+        - phone: The user's phone number formatted as a string of numbers.
         - password: The user's chosen password.
         - completion: Completion handler for the request. If the user creation was successful, `user` is the User object created and `error` is `nil`. Otherwise, `user` is `nil` and `error` is the error that occurred.
      
@@ -148,7 +148,7 @@ class APIManager {
      Attempts to sign in with a given phone number and password
      
      - parameters:
-        - phone: The phone number formatted correctly TODO: How should this be formatted?
+        - phone: The phone number formatted as a string of numbers.
         - password: The password.
         - completion: Completion handler for the request. If the sign in was successful, `error` is `nil`. Otherwise, `error` is the error that occurred.
      
@@ -195,7 +195,7 @@ class APIManager {
      Creates a new `BeaconEvent` with the given title.
      
      - parameters:
-        - title: The title of the `BeaconEvent`
+        - title: The title of the `BeaconEvent`.
         - completion: Completion handler for the request. If the creation is successful, `event` is the `BeaconEvent` returned, and `error` is `nil`. Otherwise, `event` is `nil` and `error` is the error that occurred.
      
      */
@@ -219,11 +219,14 @@ class APIManager {
      Updates a `BeaconEvent` with the given info.
      
      - parameters:
-        - eventID: the `BeaconEvent`'s `id`, which cannot be `nil`
-        - title: (optional) title if changed
-        - ownerID: (optional) owner's `id` if changed
-        - date: (optional) date of the `BeaconEvent` if changed
+        - eventID: The `BeaconEvent`'s `id`, which cannot be `nil`.
+        - title: (optional) Title if changed.
+        - ownerID: (optional) Owner's `id` if changed.
+        - date: (optional) Date of the `BeaconEvent` if changed.
         - completion: Completion handler for the request. If the update succeeds, `error` is `nil`. Otherwise, `error` is the error that occurred.
+     
+     - important:
+     This has not been tested.
      
      */
     static func updateEvent(eventID: String, title: String?, ownerID: String?, completion: (error: NSError?) -> Void) {
@@ -237,7 +240,25 @@ class APIManager {
         let parameters = [
             API.Event : eventParameters
         ]
-        makeRequest(.POST, params: parameters, router: .UpdateEvent(eventID)) { (json, error) in
+        makeRequest(.POST, params: authParameters(withParameters: parameters), router: .UpdateEvent(eventID)) { (json, error) in
+            completion(error: error)
+        }
+    }
+    
+    /**
+     
+     Deletes a `BeaconEvent` with the given `id`.
+     
+     - parameters:
+        - id: The `id` of the BeaconEvent to be deleted.
+        - completion: Completion handler for the request. If the deletion succeeds, `error` is `nil`. Otherwise, `error` is the error that occurred.
+     
+     - important:
+     This has not been tested.
+     
+     */
+    static func deleteEvent(id: String, completion: (error: NSError?) -> Void) {
+        makeRequest(.POST, params: authParameters(), router: .DeleteEvent(id)) { (json, error) in
             completion(error: error)
         }
     }
