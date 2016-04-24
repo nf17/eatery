@@ -20,26 +20,16 @@ struct BeaconEvent {
     /// Name of this event
     var title: String
     
-    /// Whether the event is active or not
-    var active: Bool
-    
-    /// When the event was created
-    var creationDate: NSDate
-    
-    /// When the event was updated
-    var updatedDate: NSDate
-    
+    /// The date of the Beacon
+    var date: NSDate
     
     init(json: JSON) {
         id = json[API.EventId].intValue
         userID = json[API.UserId].intValue
         title = json[API.EventTitle].stringValue
-        active = json[API.EventActive].boolValue
         
         let formatter = NSDateFormatter()
         formatter.dateFormat = APIDateFormat
-        creationDate = formatter.dateFromString(json[API.EventCreationDate].stringValue)!
-        creationDate = NSDate()
-        updatedDate = NSDate()
+        date = formatter.dateFromString(json[API.EventDate].stringValue)!
     }
 }
