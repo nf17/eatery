@@ -17,8 +17,8 @@ private enum Router: URLStringConvertible {
     case Login
     case Logout
     case CreateEvent
-    case UpdateEvent(String)
-    case DeleteEvent(String)
+    case UpdateEvent(Int)
+    case DeleteEvent(Int)
     
     static let BaseURLString = "http://10.148.7.14:3000/api/v1"
     
@@ -146,7 +146,7 @@ class APIManager {
     
     /**
      
-     Attempts to sign in with a given phone number and password
+     Attempts to sign in with a given phone number and password. There must not be a `User` signed in already.
      
      - parameters:
         - phone: The phone number formatted as a string of numbers.
@@ -158,6 +158,11 @@ class APIManager {
      
      */
     static func logIn(phone: String, password: String, completion: (error: NSError?) -> Void) {
+        if SessionCode != nil {
+            let error = NSError(domain: "EateryBackendDomain", code: -99999, userInfo: [kCFErrorLocalizedDescriptionKey : "A user is still logged in."])
+            completion(error: error)
+            return
+        }
         let parameters = [
             API.User : [
                 API.UserPhone : phone,
@@ -226,13 +231,13 @@ class APIManager {
         - title: (optional) Title if changed.
         - ownerID: (optional) Owner's `id` if changed.
         - date: (optional) Date of the `BeaconEvent` if changed.
-        - completion: Completion handler for the request. If the update succeeds, `error` is `nil`. Otherwise, `error` is the error that occurred.
+        - completion: Completion handler for the request. If the update succeeds, `updatedEvent` is the newly updated `BeaconEvent` and `error` is `nil`. Otherwise, `error` is the error that occurred and `updatedEvent` is `nil`.
      
      - important:
      This has not been tested.
      
      */
-    static func updateEvent(eventID: String, title: String?, ownerID: String?, date: NSDate?, completion: (error: NSError?) -> Void) {
+    static func updateEvent(eventID: Int, title: String?, ownerID: Int?, date: NSDate?, completion: (updatedEvent: BeaconEvent?, error: NSError?) -> Void) {
         var eventParameters = [String : AnyObject]()
         if let title = title {
             eventParameters[API.EventTitle] = title
@@ -247,7 +252,11 @@ class APIManager {
             API.Event : eventParameters
         ]
         makeRequest(.POST, params: authParameters(withParameters: parameters), router: .UpdateEvent(eventID)) { (json, error) in
-            completion(error: error)
+            var updatedEvent: BeaconEvent? = nil
+            if error == nil {
+                updatedEvent = BeaconEvent(json: json!)
+            }
+            completion(updatedEvent: updatedEvent, error: error)
         }
     }
     
@@ -263,7 +272,7 @@ class APIManager {
      This has not been tested.
      
      */
-    static func deleteEvent(id: String, completion: (error: NSError?) -> Void) {
+    static func deleteEvent(id: Int, completion: (error: NSError?) -> Void) {
         makeRequest(.POST, params: authParameters(), router: .DeleteEvent(id)) { (json, error) in
             completion(error: error)
         }
@@ -288,6 +297,7 @@ class APIManager {
                     // TODO: Error code, multiple errors
                     let error = NSError(domain: "EateryBackendDomain", code: -99999, userInfo: [kCFErrorLocalizedDescriptionKey : json[API.Data][API.Errors].arrayValue[0].stringValue])
                     completion(json: nil, error: error)
+                    return
                 }
                 completion(json: json[API.Data], error: nil)
         }
