@@ -90,18 +90,15 @@ private var SessionCode: String? {
  */
 class APIManager {
     
-    /// Shared singleton of APIManager
-    static let sharedInstance: APIManager = APIManager()
-    
     /// Private init to prevent public initialization
     private init() {    }
     
     // MARK: - Authentication
     
-    private func authParameters(withParameters parameters: [String : AnyObject] = [:]) -> [String : AnyObject] {
+    private static func authParameters(withParameters parameters: [String : AnyObject] = [:]) -> [String : AnyObject] {
         var dict: [String : AnyObject] = [API.APIKey : EateryAPIKey]
         if SessionCode != nil {
-            dict[API.SessionCode] = SessionCode
+            dict[API.Session] = [API.SessionCode : SessionCode!]
         }
         for (key, value) in parameters {
             dict[key] = value
@@ -123,7 +120,7 @@ class APIManager {
         - completion: Completion handler for the request. If the user creation was successful, user is the User object created and error is nil. Otherwise, user is nil and error is the error that occurred.
      
      */
-    func signUp(firstName: String, lastName: String, phone: String, password: String, completion: (user: User?, error: NSError?) -> Void) {
+    static func signUp(firstName: String, lastName: String, phone: String, password: String, completion: (user: User?, error: NSError?) -> Void) {
         let parameters = [
             API.User : [
                 API.UserFirstName : firstName,
@@ -132,53 +129,71 @@ class APIManager {
                 API.UserPassword : password
             ]
         ]
-        makeRequest(.POST, params: authParameters(withParameters: parameters), router: .SignUp) { (success, json, error) in
-            completion(user: User(json: json?[API.User] ?? nil), error: error)
+        makeRequest(.POST, params: authParameters(withParameters: parameters), router: .SignUp) { (json, error) in
+            var user: User? = nil
+            if error == nil {
+                user = User(json: json![API.User])
+            }
+            completion(user: user, error: error)
         }
     }
     
     /**
      
-     Attempts to sign in for a given phone number and password
+     Attempts to sign in with a given phone number and password
      
      - parameters:
         - phone: The phone number formatted correctly TODO: How should this be formatted?
         - password: The password.
-        - completion: Completion handler for the request. If the sign in was successful, success is true. Otherwise, success is nil if a network problem occurred, and error is the error that occurred.
+        - completion: Completion handler for the request. If the sign in was successful, error is nil. Otherwise, error is the error that occurred.
      
      - Important:
      This has not been tested.
      
      */
-    func logIn(phone: String, password: String, completion: (success: Bool?, error: NSError?) -> Void) {
+    static func logIn(phone: String, password: String, completion: (error: NSError?) -> Void) {
         let parameters = [
             API.User : [
                 API.UserPhone : phone,
                 API.UserPassword : password
             ]
         ]
-        makeRequest(.POST, params: authParameters(withParameters: parameters), router: .Login) { (success, json, error) in
-            if success {
-                if let code = json?[API.Data][API.SessionCode].string {
-                    SessionCode = code
-                } else {
-                    // TODO: JSON error??
-                    completion(success: false, error: error)
-                }
+        makeRequest(.POST, params: authParameters(withParameters: parameters), router: .Login) { (json, error) in
+            if error == nil {
+                SessionCode = json![API.Data][API.SessionCode].stringValue
             }
-            completion(success: success, error: error)
+            completion(error: error)
         }
     }
+    
+    /**
+     
+     Attempts to sign out the current user.
+     
+     - Important:
+     This has not been tested.
+     
+     */
+    static func logOut(completion: (error: NSError?) -> Void) {
+        makeRequest(.POST, params: authParameters(), router: .Logout) { (json, error) in
+            if error != nil {
+                SessionCode = nil
+            }
+            completion(error: error)
+        }
+    }
+    
+    
     
     // MARK: - Beacons...
     
     // MARK: - Request Helper Method
     
-    private func makeRequest(method: Alamofire.Method, params: [String: AnyObject], router: Router, completion: (success: Bool, json: JSON?, error: NSError?) -> Void) {
+    private static func makeRequest(method: Alamofire.Method, params: [String: AnyObject], router: Router, completion: (json: JSON?, error: NSError?) -> Void) {
         Alamofire.request(method, router, parameters: params)
             .responseJSON { response in
                 if let error = response.result.error {
-                    completion(success: false, json: nil, error: error)
+                    completion(json: nil, error: error)
                     return
                 }
                 
@@ -188,10 +203,10 @@ class APIManager {
                 
                 if !json[API.Success].boolValue {
                     // TODO: Error code, multiple errors
-                    let error = NSError(domain: json[API.Data][API.Errors].stringValue, code: -99999, userInfo: [kCFErrorLocalizedDescriptionKey : json[API.Data][API.Errors].arrayValue[0].stringValue])
-                    completion(success: false, json: nil, error: error)
+                    let error = NSError(domain: "EateryBackendDomain", code: -99999, userInfo: [kCFErrorLocalizedDescriptionKey : json[API.Data][API.Errors].arrayValue[0].stringValue])
+                    completion(json: nil, error: error)
                 }
-                completion(success: true, json: json, error: nil)
+                completion(json: json, error: nil)
         }
     }
 }

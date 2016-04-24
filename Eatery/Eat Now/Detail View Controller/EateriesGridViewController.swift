@@ -79,9 +79,12 @@ class EateriesGridViewController: UIViewController, MenuButtonsDelegate {
         let loadingView = DGElasticPullToRefreshLoadingViewCircle()
         loadingView.tintColor = UIColor.whiteColor()
         collectionView.dg_addPullToRefreshWithActionHandler({ [weak self] () -> Void in
-            APIManager.sharedInstance.logIn("3984731833", password: "strawberrycupcake") { (success, error) in
+//            APIManager.sharedInstance.signUp("Lucas", lastName: "Derraugh", phone: "3984731833", password: "strawberrycupcake") { (user, error) in
+//                    print(error)
+//                    print(user)
+//                }
+            APIManager.logIn("3984731833", password: "strawberrycupcake") { error in
                 print(error)
-                print(success)
             }
 			Analytics.trackPullToRefresh()
                 self?.loadData(true) {

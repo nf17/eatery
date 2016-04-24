@@ -32,7 +32,7 @@ class User {
     /// The User's phone number
     var phoneNumber: Int
     
-    init?(json: JSON) {
+    init(json: JSON) {
         id = json[API.UserId].intValue
         firstName = json[API.UserFirstName].stringValue
         lastName = json[API.UserLastName].stringValue
