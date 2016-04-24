@@ -70,6 +70,7 @@ struct API {
     static let EventActive          = "active"
     static let EventCreationDate    = "created_at"
     static let EventUpdatedDate     = "updated_at"
+    static let EventDate            = "event_time"
     
     // Resposes
     static let Data         = "data"
@@ -196,13 +197,15 @@ class APIManager {
      
      - parameters:
         - title: The title of the `BeaconEvent`.
+        - date: The date of the `BeaconEvent`. This must be in the future.
         - completion: Completion handler for the request. If the creation is successful, `event` is the `BeaconEvent` returned, and `error` is `nil`. Otherwise, `event` is `nil` and `error` is the error that occurred.
      
      */
-    static func createEvent(title: String, completion: (event: BeaconEvent?, error: NSError?) -> Void) {
+    static func createEvent(title: String, date: NSDate, completion: (event: BeaconEvent?, error: NSError?) -> Void) {
         let parameters = [
             API.Event : [
-                API.EventTitle : title
+                API.EventTitle : title,
+                API.EventDate : date
             ]
         ]
         makeRequest(.POST, params: authParameters(withParameters: parameters), router: .CreateEvent) { (json, error) in
@@ -229,13 +232,16 @@ class APIManager {
      This has not been tested.
      
      */
-    static func updateEvent(eventID: String, title: String?, ownerID: String?, completion: (error: NSError?) -> Void) {
+    static func updateEvent(eventID: String, title: String?, ownerID: String?, date: NSDate?, completion: (error: NSError?) -> Void) {
         var eventParameters = [String : AnyObject]()
         if let title = title {
             eventParameters[API.EventTitle] = title
         }
         if let ownerID = ownerID {
             eventParameters[API.EventUserId] = ownerID
+        }
+        if let date = date {
+            eventParameters[API.EventDate] = date
         }
         let parameters = [
             API.Event : eventParameters
