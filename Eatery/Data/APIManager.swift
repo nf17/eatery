@@ -315,14 +315,14 @@ class APIManager {
     
     /**
      
-    Creates a `BeaconRequest` with the `BeaconEvent` `id` and the `id` of the `User` being invited.
+     Creates a `BeaconRequest` with the `BeaconEvent` `id` and the `id` of the `User` being invited.
      
-    - parameters:
+     - parameters:
         - eventID: The `id` of the `BeaconEvent`.
         - userID: The `id` of the `User` being invited.
         - completion: Completion handler for the request. If the request succeeds, `request` is the request that was created, and `error` is `nil`. Otherwise, `error` is the error that occurred and `request` is `nil`.
-    - important:
-    This has not been tested.
+     - important:
+     This has not been tested.
      */
     static func createBeaconRequest(eventID: Int, userID: Int, completion: (error: NSError?) -> Void) {
         let parameters = [
@@ -339,7 +339,7 @@ class APIManager {
 
     /**
 
-    Accepts or Rejects to a `BeaconRequest` from another `User` for a given `BeaconEvent`.
+     Accepts or Rejects to a `BeaconRequest` from another `User` for a given `BeaconEvent`.
         - parameters:
             - accept: Whether the `User` is accepting or rejecting the request to join the event.
             - eventID: The `id` of the `BeaconEvent`.
@@ -347,7 +347,7 @@ class APIManager {
         - important:
         This has not been tested.
 
-    */
+     */
     static func reactToBeaconRequest(accept: Bool, eventID: Int, completion: (error: NSError?) -> Void) {
         let parameters: [String: AnyObject] = [
             API.EventId : eventID,
@@ -360,13 +360,13 @@ class APIManager {
 
     /**
     
-    Deletes a `BeaconRequest`.
+     Deletes a `BeaconRequest`.
         - parameters:
             - eventID: The `id` of the `BeaconEvent`.
             - userID: The `id` of the `BeaconEvent`.
             - completion: Completion handler for the deletion. If the deletion succeeds, `error` is `nil`. Otherwise, `error` is the error that occurred.
 
-    */
+     */
     static func deleteBeaconRequest(eventID: Int, userID: Int, completion: (error: NSError?) -> Void) {
         let parameters = [
             API.EventId : eventID,
