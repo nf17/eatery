@@ -16,9 +16,13 @@ private enum Router: URLStringConvertible {
     case SignUp
     case Login
     case Logout
+    case ShowEvent(Int)
     case CreateEvent
     case UpdateEvent(Int)
     case DeleteEvent(Int)
+    case CreateRequest
+    case ReactRequest
+    case DeleteRequest
     
     static let BaseURLString = "http://10.148.7.14:3000/api/v1"
     
@@ -33,12 +37,20 @@ private enum Router: URLStringConvertible {
                 return "/login"
             case .Logout:
                 return "/logout"
+            case .ShowEvent(let id):
+                return "/events/show/\(id)"
             case .CreateEvent:
                 return "/events/create"
             case .UpdateEvent(let id):
                 return "/events/update/\(id)"
             case .DeleteEvent(let id):
                 return "/events/delete/\(id)"
+            case .CreateRequest:
+                return "/event_requests/create"
+            case .ReactRequest:
+                return "/event_requests"
+            case .DeleteRequest:
+                return "/event_requests/delete"
             }
         }()
         return Router.BaseURLString + path
@@ -71,6 +83,11 @@ struct API {
     static let EventCreationDate    = "created_at"
     static let EventUpdatedDate     = "updated_at"
     static let EventDate            = "event_time"
+    
+    // BeaconRequest
+    static let RequestEventId       = "event_id"
+    static let RequestUserId        = "user_id"
+    static let RequestAccepted      = "is_accepted"
     
     // Responses
     static let Data         = "data"
@@ -135,7 +152,7 @@ class APIManager {
                 API.UserPassword : password
             ]
         ]
-        makeRequest(.POST, params: authParameters(withParameters: parameters), router: .SignUp) { (json, error) in
+        makeRequest(.POST, params: authParameters(withParameters: parameters), router: .SignUp) { json, error in
             var user: User? = nil
             if error == nil {
                 user = User(json: json![API.User])
@@ -169,7 +186,7 @@ class APIManager {
                 API.UserPassword : password
             ]
         ]
-        makeRequest(.POST, params: authParameters(withParameters: parameters), router: .Login) { (json, error) in
+        makeRequest(.POST, params: authParameters(withParameters: parameters), router: .Login) { json, error in
             if error == nil {
                 SessionCode = json![API.SessionCode].stringValue
             }
@@ -186,7 +203,7 @@ class APIManager {
      
      */
     static func logOut(completion: (error: NSError?) -> Void) {
-        makeRequest(.POST, params: authParameters(), router: .Logout) { (json, error) in
+        makeRequest(.POST, params: authParameters(), router: .Logout) { json, error in
             if error == nil {
                 SessionCode = nil
             }
@@ -195,6 +212,28 @@ class APIManager {
     }
     
     // MARK: - Events
+    
+    /**
+     
+     Gives `BeaconEvent` info given a `BeaconEvent` ID. If the request succeeds, the `BeaconEvent` given is updated with the 
+
+     - parameters:
+        - id: The `id` of the `BeaconEvent`
+        - completion: Completion handler for the request. If the request succeeds, `error` is `nil`. Otherwise, `error` is the error that occurred.
+     
+     */
+    static func showEvent(id: Int, completion: (event: BeaconEvent?, error: NSError?) -> Void) {
+        let parameters = [
+            API.EventId : id
+        ]
+        makeRequest(.GET, params: authParameters(withParameters: parameters), router: .CreateEvent) { json, error in
+            var event: BeaconEvent? = nil
+            if error == nil {
+                event = BeaconEvent(json: json!)
+            }
+            completion(event: event, error: error)
+        }
+    }
     
     /**
      
@@ -213,7 +252,7 @@ class APIManager {
                 API.EventDate : date
             ]
         ]
-        makeRequest(.POST, params: authParameters(withParameters: parameters), router: .CreateEvent) { (json, error) in
+        makeRequest(.POST, params: authParameters(withParameters: parameters), router: .CreateEvent) { json, error in
             var event: BeaconEvent? = nil
             if error == nil {
                 event = BeaconEvent(json: json!)
@@ -231,7 +270,7 @@ class APIManager {
         - title: (optional) Title if changed.
         - ownerID: (optional) Owner's `id` if changed.
         - date: (optional) Date of the `BeaconEvent` if changed.
-        - completion: Completion handler for the request. If the update succeeds, `updatedEvent` is the newly updated `BeaconEvent` and `error` is `nil`. Otherwise, `error` is the error that occurred and `updatedEvent` is `nil`.
+        - completion: Completion handler for the request. If the update succeeds, updatedEvent` is the newly updated `BeaconEvent` and `error` is `nil`. Otherwise, `error` is the error that occurred and `updatedEvent` is `nil`.
      
      */
     static func updateEvent(eventID: Int, title: String?, ownerID: Int?, date: NSDate?, completion: (updatedEvent: BeaconEvent?, error: NSError?) -> Void) {
@@ -248,7 +287,7 @@ class APIManager {
         let parameters = [
             API.Event : eventParameters
         ]
-        makeRequest(.POST, params: authParameters(withParameters: parameters), router: .UpdateEvent(eventID)) { (json, error) in
+        makeRequest(.POST, params: authParameters(withParameters: parameters), router: .UpdateEvent(eventID)) { json, error in
             var updatedEvent: BeaconEvent? = nil
             if error == nil {
                 updatedEvent = BeaconEvent(json: json!)
@@ -262,12 +301,12 @@ class APIManager {
      Deletes a `BeaconEvent` with the given `id`.
      
      - parameters:
-        - id: The `id` of the `BeaconEvent` to be deleted.
+        - eventID: The `id` of the `BeaconEvent` to be deleted.
         - completion: Completion handler for the request. If the deletion succeeds, `error` is `nil`. Otherwise, `error` is the error that occurred.
      
      */
-    static func deleteEvent(id: Int, completion: (error: NSError?) -> Void) {
-        makeRequest(.POST, params: authParameters(), router: .DeleteEvent(id)) { (json, error) in
+    static func deleteEvent(eventID: Int, completion: (error: NSError?) -> Void) {
+        makeRequest(.POST, params: authParameters(), router: .DeleteEvent(eventID)) { json, error in
             completion(error: error)
         }
     }
@@ -276,17 +315,68 @@ class APIManager {
     
     /**
      
-     Creates a `BeaconRequest` with the `BeaconEvent` `id` and the `id` of the `User` being invited.
+    Creates a `BeaconRequest` with the `BeaconEvent` `id` and the `id` of the `User` being invited.
      
-     - parameters:
-     - eventID: The `id` of the `BeaconEvent`.
-     - userID: The `id` of the `User` being invited.
-     - completion: Completion handler for the request. If the request succeeds, `request` is the request that was created, and `error` is `nil`. Otherwise, `error` is the error that occurred and `request`.
+    - parameters:
+        - eventID: The `id` of the `BeaconEvent`.
+        - userID: The `id` of the `User` being invited.
+        - completion: Completion handler for the request. If the request succeeds, `request` is the request that was created, and `error` is `nil`. Otherwise, `error` is the error that occurred and `request` is `nil`.
+    - important:
+    This has not been tested.
      */
     static func createBeaconRequest(eventID: Int, userID: Int, completion: (error: NSError?) -> Void) {
-        
+        let parameters = [
+            API.Event : eventID
+        ]
+        makeRequest(.POST, params: authParameters(withParameters: parameters), router: .CreateRequest) { json, error in
+            var request: BeaconRequest? = nil
+            if error == nil {
+                request = BeaconRequest(json: json!)
+            }
+            completion(error: error)
+        }
     }
+
+    /**
+
+    Accepts or Rejects to a `BeaconRequest` from another `User` for a given `BeaconEvent`.
+        - parameters:
+            - accept: Whether the `User` is accepting or rejecting the request to join the event.
+            - eventID: The `id` of the `BeaconEvent`.
+            - completion: Completion handler for the request. If the request succeeds, `request` is the request that was created, and `error` is `nil`. Otherwise, `error` is the error that occurred.
+        - important:
+        This has not been tested.
+
+    */
+    static func reactToBeaconRequest(accept: Bool, eventID: Int, completion: (error: NSError?) -> Void) {
+        let parameters: [String: AnyObject] = [
+            API.EventId : eventID,
+            API.RequestAccepted : accept
+        ]
+        makeRequest(.POST, params: authParameters(withParameters: parameters), router: .CreateRequest) { json, error in
+            completion(error: error)
+        }
+    }
+
+    /**
     
+    Deletes a `BeaconRequest`.
+        - parameters:
+            - eventID: The `id` of the `BeaconEvent`.
+            - userID: The `id` of the `BeaconEvent`.
+            - completion: Completion handler for the deletion. If the deletion succeeds, `error` is `nil`. Otherwise, `error` is the error that occurred.
+
+    */
+    static func deleteBeaconRequest(eventID: Int, userID: Int, completion: (error: NSError?) -> Void) {
+        let parameters = [
+            API.EventId : eventID,
+            API.UserId : userID
+        ]
+        makeRequest(.POST, params: authParameters(withParameters: parameters), router: .DeleteRequest) { json, error in
+            completion(error: error)
+        }
+    }
+
     
     // MARK: - Request Helper Method
     

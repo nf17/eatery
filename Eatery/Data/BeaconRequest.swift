@@ -10,5 +10,8 @@ import Foundation
 import SwiftyJSON
 
 struct BeaconRequest {
-    
+    init(json: JSON) {
+        
+    }
 }
+

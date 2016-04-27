@@ -31,7 +31,6 @@
 		652BEED81C70E5F70079C407 /* nicknames.json in Resources */ = {isa = PBXBuildFile; fileRef = E9CFC0A81C0E4A3000ED884A /* nicknames.json */; };
 		652BEED91C70E6020079C407 /* UIColor+ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0497AF11B64AA1800AC1C6C /* UIColor+ColorScheme.swift */; };
 		652BEEDA1C70E6240079C407 /* TimeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0497AF51B64AA1800AC1C6C /* TimeFactory.swift */; };
-		65982EDF1CCD56D200D6C992 /* BeaconRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65982EDE1CCD56D200D6C992 /* BeaconRequest.swift */; };
 		659B216E1C70796600F3B138 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 659B216C1C70796600F3B138 /* Interface.storyboard */; };
 		659B21701C70796600F3B138 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 659B216F1C70796600F3B138 /* Assets.xcassets */; };
 		659B21771C70796600F3B138 /* Eatery Watch App Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 659B21761C70796600F3B138 /* Eatery Watch App Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -39,6 +38,7 @@
 		659B21821C70796600F3B138 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659B21811C70796600F3B138 /* NotificationController.swift */; };
 		659B21841C70796600F3B138 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 659B21831C70796600F3B138 /* Assets.xcassets */; };
 		659B21881C70796600F3B138 /* Eatery Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 659B216A1C70796600F3B138 /* Eatery Watch App.app */; };
+		65A953631CD135870074846C /* BeaconRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A953621CD135870074846C /* BeaconRequest.swift */; };
 		65BF07931CC29A1E0078B180 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BF07921CC29A1E0078B180 /* APIManager.swift */; };
 		65E53D931CC4191B00087A57 /* EateryAPIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E53D921CC4191B00087A57 /* EateryAPIKey.swift */; };
 		65E53D951CC41C4900087A57 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E53D941CC41C4900087A57 /* User.swift */; };
@@ -191,7 +191,6 @@
 		652AE53A1C707EBC00B7245A /* EateriesInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EateriesInterfaceController.swift; sourceTree = "<group>"; };
 		652AE53C1C707EBC00B7245A /* EateryRowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EateryRowController.swift; sourceTree = "<group>"; };
 		652AE53D1C707EBC00B7245A /* MenuInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuInterfaceController.swift; sourceTree = "<group>"; };
-		65982EDE1CCD56D200D6C992 /* BeaconRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconRequest.swift; sourceTree = "<group>"; };
 		659B216A1C70796600F3B138 /* Eatery Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eatery Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		659B216D1C70796600F3B138 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		659B216F1C70796600F3B138 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -202,6 +201,7 @@
 		659B21811C70796600F3B138 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		659B21831C70796600F3B138 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		659B21851C70796600F3B138 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		65A953621CD135870074846C /* BeaconRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconRequest.swift; sourceTree = "<group>"; };
 		65BF07921CC29A1E0078B180 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		65E53D921CC4191B00087A57 /* EateryAPIKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EateryAPIKey.swift; path = /Users/daniel/CUAppDev/EateryAPIKey.swift; sourceTree = "<absolute>"; };
 		65E53D941CC41C4900087A57 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -425,7 +425,7 @@
 				65BF07921CC29A1E0078B180 /* APIManager.swift */,
 				65E53D941CC41C4900087A57 /* User.swift */,
 				65E53D961CC41E5800087A57 /* BeaconEvent.swift */,
-				65982EDE1CCD56D200D6C992 /* BeaconRequest.swift */,
+				65A953621CD135870074846C /* BeaconRequest.swift */,
 			);
 			name = Beacons;
 			sourceTree = "<group>";
@@ -1096,7 +1096,7 @@
 				95434FC61BD8699F003612DB /* Tools.swift in Sources */,
 				E93CD41B1BE67DB000089CE5 /* MealTableViewController.swift in Sources */,
 				95434FB71BD8699F003612DB /* ADScreenCapture.swift in Sources */,
-				65982EDF1CCD56D200D6C992 /* BeaconRequest.swift in Sources */,
+				65A953631CD135870074846C /* BeaconRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
