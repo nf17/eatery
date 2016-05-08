@@ -16,6 +16,7 @@ private enum Router: URLStringConvertible {
     case SignUp
     case Login
     case Logout
+    case FetchEvents
     case ShowEvent(Int)
     case CreateEvent
     case UpdateEvent(Int)
@@ -37,6 +38,8 @@ private enum Router: URLStringConvertible {
                 return "/login"
             case .Logout:
                 return "/logout"
+            case .FetchEvents:
+                return "/events/index" // IS THIS RIGHT???
             case .ShowEvent(let id):
                 return "/events/show/\(id)"
             case .CreateEvent:
@@ -214,6 +217,21 @@ class APIManager {
     
     // MARK: - Events
     
+    /**
+
+     Requests a list of 
+
+     */
+    static func fetchEvents(completion: (events: [BeaconEvent]?, error: NSError?) -> Void) {
+        makeRequest(.GET, params: authParameters(), router: .FetchEvents) { json, error in
+            var events: [BeaconEvent]? = nil
+            if error == nil {
+
+            }
+            completion(events: events, error: error)
+        }
+    }
+
     /**
      
      Gives `BeaconEvent` info given a `BeaconEvent` ID. If the request succeeds, the `BeaconEvent` given is updated with the 
