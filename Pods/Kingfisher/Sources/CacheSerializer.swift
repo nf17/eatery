@@ -81,7 +81,7 @@ public struct DefaultCacheSerializer: CacheSerializer {
         return Kingfisher<Image>.image(
             data: data,
             scale: options.scaleFactor,
-            preloadAllAnimationData: options.preloadAllAnimationData,
+            preloadAllGIFData: options.preloadAllGIFData,
             onlyFirstFrame: options.onlyLoadFirstFrame)
     }
 }

@@ -135,7 +135,7 @@ class EateriesViewController: UIViewController, MenuButtonsDelegate, CLLocationM
         collectionView.dataSource = self
         collectionView.delegate = self
         definesPresentationContext = true
-        collectionView.register(UINib(nibName: "EateryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Cell")
+        collectionView.register(EateryCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         collectionView.register(UINib(nibName: "EateriesCollectionViewHeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView")
         collectionView.backgroundColor = UIColor.collectionViewBackground
         collectionView.showsVerticalScrollIndicator = false
@@ -383,13 +383,13 @@ extension EateriesViewController: UICollectionViewDataSource {
                     NSLog("Error in handling regex")
                 }
                 cell.menuTextView.attributedText = attributedString
-                cell.menuTextViewHeight.constant = cell.frame.height - 54.0
+                cell.menuTextViewHeight = Double(cell.frame.height) - 54.0
             } else {
                 cell.menuTextView.text = nil
-                cell.menuTextViewHeight.constant = 0.0
+                cell.menuTextViewHeight = 0.0
             }
         } else {
-            cell.menuTextViewHeight.constant = 0.0
+            cell.menuTextViewHeight = 0.0
         }
         
         return cell

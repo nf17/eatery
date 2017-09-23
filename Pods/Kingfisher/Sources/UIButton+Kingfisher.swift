@@ -46,9 +46,6 @@ extension Kingfisher where Base: UIButton {
      
      - note: Both the `progressBlock` and `completionHandler` will be invoked in main thread.
      The `CallbackDispatchQueue` specified in `optionsInfo` will not be used in callbacks of this method.
-     
-     If `resource` is `nil`, the `placeholder` image will be set and
-     `completionHandler` will be called with both `error` and `image` being `nil`.
      */
     @discardableResult
     public func setImage(with resource: Resource?,
@@ -65,7 +62,7 @@ extension Kingfisher where Base: UIButton {
             return .empty
         }
         
-        let options = KingfisherManager.shared.defaultOptions + (options ?? KingfisherEmptyOptionsInfo)
+        let options = options ?? KingfisherEmptyOptionsInfo
         if !options.keepCurrentImageWhileLoading {
             base.setImage(placeholder, for: state)
         }
@@ -85,10 +82,10 @@ extension Kingfisher where Base: UIButton {
             completionHandler: {[weak base] image, error, cacheType, imageURL in
                 DispatchQueue.main.safeAsync {
                     guard let strongBase = base, imageURL == self.webURL(for: state) else {
-                        completionHandler?(image, error, cacheType, imageURL)
                         return
                     }
                     self.setImageTask(nil)
+                    
                     if image != nil {
                         strongBase.setImage(image, for: state)
                     }
@@ -124,9 +121,6 @@ extension Kingfisher where Base: UIButton {
      
      - note: Both the `progressBlock` and `completionHandler` will be invoked in main thread.
      The `CallbackDispatchQueue` specified in `optionsInfo` will not be used in callbacks of this method.
-     
-     If `resource` is `nil`, the `placeholder` image will be set and
-     `completionHandler` will be called with both `error` and `image` being `nil`.
      */
     @discardableResult
     public func setBackgroundImage(with resource: Resource?,
@@ -143,7 +137,7 @@ extension Kingfisher where Base: UIButton {
             return .empty
         }
         
-        let options = KingfisherManager.shared.defaultOptions + (options ?? KingfisherEmptyOptionsInfo)
+        let options = options ?? KingfisherEmptyOptionsInfo
         if !options.keepCurrentImageWhileLoading {
             base.setBackgroundImage(placeholder, for: state)
         }
@@ -163,7 +157,6 @@ extension Kingfisher where Base: UIButton {
             completionHandler: { [weak base] image, error, cacheType, imageURL in
                 DispatchQueue.main.safeAsync {
                     guard let strongBase = base, imageURL == self.backgroundWebURL(for: state) else {
-                        completionHandler?(image, error, cacheType, imageURL)
                         return
                     }
                     self.setBackgroundImageTask(nil)

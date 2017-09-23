@@ -7,22 +7,87 @@ let metersInMile: Double = 1609.344
 
 class EateryCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var backgroundImageView: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var statusLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var distanceLabel: UILabel!
-    @IBOutlet weak var infoContainer: UIView!
-    @IBOutlet weak var menuTextView: UITextView!
-    @IBOutlet weak var menuTextViewHeight: NSLayoutConstraint!
-    @IBOutlet var paymentImageViews: [UIImageView]!
-    @IBOutlet weak var paymentContainer: UIView!
+    var backgroundImageView = UIImageView()
+    var titleLabel = UILabel()
+    var statusLabel = UILabel()
+    var timeLabel = UILabel()
+    var distanceLabel = UILabel()
+    var infoContainer = UIView()
+    var menuTextView = UITextView()
+    var menuTextViewHeight: Double = 0
+    var paymentImageViews = [UIImageView]()
+    var paymentContainer = UIView()
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        addSubview(backgroundImageView)
+        addSubview(infoContainer)
+        addSubview(menuTextView)
+        addSubview(paymentContainer)
+        infoContainer.addSubview(titleLabel)
+        infoContainer.addSubview(statusLabel)
+        infoContainer.addSubview(timeLabel)
+        infoContainer.addSubview(distanceLabel)
+        
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.equalToSuperview()
+            make.bottom.equalTo(infoContainer.snp.top)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
+        
+        infoContainer.snp.makeConstraints { (make) in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.bottom.equalTo(menuTextView.snp.top)
+            make.height.equalTo(54)
+        }
+        
+        statusLabel.snp.makeConstraints { (make) in
+            make.bottom.equalToSuperview().offset(-10)
+            make.top.equalTo(titleLabel.snp.bottom).offset(2)
+            make.height.equalTo(14)
+            make.trailing.equalTo(timeLabel.snp.leading).offset(-8)
+            make.firstBaseline.equalTo(timeLabel)
+        }
+        
+        titleLabel.snp.makeConstraints { (make) in
+            make.leading.equalToSuperview().offset(10)
+            make.top.equalToSuperview().offset(10)
+            make.leading.equalTo(statusLabel)
+            make.centerY.equalTo(distanceLabel)
+//            make.bottom.equalTo(statusLabel.snp.top).offset(-2)
+        }
+        
+        timeLabel.snp.makeConstraints { (make) in
+            make.firstBaseline.equalTo(statusLabel.snp.firstBaseline)
+        }
+        
+        distanceLabel.snp.makeConstraints { (make) in
+            make.trailing.equalToSuperview().offset(-10)
+            make.centerY.equalTo(titleLabel)
+        }
+        
+        paymentContainer.snp.makeConstraints { (make) in
+            make.trailing.equalToSuperview().offset(-10)
+            make.top.equalToSuperview().offset(-10)
+        }
+        
+        menuTextView.snp.makeConstraints { (make) in
+            make.trailing.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.height.equalTo(menuTextViewHeight)
+            make.top.equalTo(infoContainer.snp.bottom)
+        }
         
         menuTextView.text = nil
         menuTextView.textContainerInset = UIEdgeInsets(top: 10.0, left: 6.0, bottom: 10.0, right: 6.0)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     var eatery: Eatery!
