@@ -2,6 +2,7 @@ import UIKit
 import DiningStack
 import CoreLocation
 import Kingfisher
+import SnapKit
 
 let metersInMile: Double = 1609.344
 
@@ -14,21 +15,37 @@ class EateryCollectionViewCell: UICollectionViewCell {
     var distanceLabel = UILabel()
     var infoContainer = UIView()
     var menuTextView = UITextView()
-    var menuTextViewHeight: Double = 0
+    var menuTextViewHeight: NSLayoutConstraint!
+    var contentViewWidth: NSLayoutConstraint!
+    var contentViewHeight: NSLayoutConstraint!
+    var backgroundImageViewHeight: NSLayoutConstraint!
     var paymentImageViews = [UIImageView]()
     var paymentContainer = UIView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addSubview(backgroundImageView)
-        addSubview(infoContainer)
-        addSubview(menuTextView)
-        addSubview(paymentContainer)
+        contentView.addSubview(backgroundImageView)
+        contentView.addSubview(infoContainer)
+        contentView.addSubview(menuTextView)
+        contentView.addSubview(paymentContainer)
         infoContainer.addSubview(titleLabel)
         infoContainer.addSubview(statusLabel)
         infoContainer.addSubview(timeLabel)
         infoContainer.addSubview(distanceLabel)
+        
+        menuTextViewHeight = menuTextView.heightAnchor.constraint(equalToConstant: 0)
+        menuTextViewHeight.isActive = true
+        menuTextView.translatesAutoresizingMaskIntoConstraints = false
+        
+        contentViewWidth = contentView.widthAnchor.constraint(equalToConstant: 0)
+        contentViewWidth.isActive = true
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+
+        
+        backgroundImageViewHeight = backgroundImageView.heightAnchor.constraint(equalToConstant: 0)
+        backgroundImageViewHeight.isActive = true
+        backgroundImageView.translatesAutoresizingMaskIntoConstraints = false
         
         backgroundImageView.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
@@ -49,7 +66,7 @@ class EateryCollectionViewCell: UICollectionViewCell {
             make.top.equalTo(titleLabel.snp.bottom).offset(2)
             make.height.equalTo(14)
             make.trailing.equalTo(timeLabel.snp.leading).offset(-8)
-            make.firstBaseline.equalTo(timeLabel)
+//            make.firstBaseline.equalTo(timeLabel.snp.firstBaseline)
         }
         
         titleLabel.snp.makeConstraints { (make) in
@@ -57,7 +74,6 @@ class EateryCollectionViewCell: UICollectionViewCell {
             make.top.equalToSuperview().offset(10)
             make.leading.equalTo(statusLabel)
             make.centerY.equalTo(distanceLabel)
-//            make.bottom.equalTo(statusLabel.snp.top).offset(-2)
         }
         
         timeLabel.snp.makeConstraints { (make) in
@@ -78,12 +94,23 @@ class EateryCollectionViewCell: UICollectionViewCell {
             make.trailing.equalToSuperview()
             make.leading.equalToSuperview()
             make.bottom.equalToSuperview()
-            make.height.equalTo(menuTextViewHeight)
             make.top.equalTo(infoContainer.snp.bottom)
         }
         
+        
+        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: UIFontWeightSemibold)
+        distanceLabel.font = UIFont.systemFont(ofSize: 11, weight: UIFontWeightMedium)
+        statusLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFontWeightSemibold)
+        timeLabel.font = UIFont.systemFont(ofSize: 12)
+        
+        infoContainer.backgroundColor = .white
+        
         menuTextView.text = nil
         menuTextView.textContainerInset = UIEdgeInsets(top: 10.0, left: 6.0, bottom: 10.0, right: 6.0)
+        
+        
+        contentViewHeight = contentView.heightAnchor.constraint(equalToConstant: backgroundImageView.frame.height + infoContainer.frame.height + menuTextView.frame.height)
+        contentViewHeight.isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -17,8 +17,10 @@ class EateriesCollectionViewGridLayout: UICollectionViewFlowLayout {
         case .unspecified:
             break
         }
+        
+        estimatedItemSize = CGSize(width: 1, height: 100)
 
-        itemSize = CGSize(width: cellWidth, height: cellWidth * 0.4)
+//        itemSize = CGSize(width: cellWidth, height: cellWidth * 0.4)
         minimumLineSpacing = kCollectionViewGutterWidth
         minimumInteritemSpacing = kCollectionViewGutterWidth
         sectionInset = UIEdgeInsets(top: 0, left: kCollectionViewGutterWidth, bottom: 32, right: kCollectionViewGutterWidth)

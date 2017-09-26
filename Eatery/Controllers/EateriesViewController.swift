@@ -373,6 +373,7 @@ extension EateriesViewController: UICollectionViewDataSource {
         if searchBar.text != "" {
             if let names = searchedMenuItemNames[eatery] {
                 let baseString = names.joined(separator: "\n")
+                let height = baseString.height(withConstrainedWidth: view.frame.width - 20, font: UIFont.systemFont(ofSize: 11))
                 let attributedString = NSMutableAttributedString(string: baseString, attributes: [NSForegroundColorAttributeName : UIColor.gray, NSFontAttributeName : UIFont.systemFont(ofSize: 11.0)])
                 do {
                     let regex = try NSRegularExpression(pattern: searchBar.text ?? "", options: NSRegularExpression.Options.caseInsensitive)
@@ -383,14 +384,17 @@ extension EateriesViewController: UICollectionViewDataSource {
                     NSLog("Error in handling regex")
                 }
                 cell.menuTextView.attributedText = attributedString
-                cell.menuTextViewHeight = Double(cell.frame.height) - 54.0
+                cell.menuTextViewHeight.constant = height + 20
             } else {
                 cell.menuTextView.text = nil
-                cell.menuTextViewHeight = 0.0
+                cell.menuTextViewHeight.constant = 0.0
+                cell.backgroundImageViewHeight.constant = ((collectionView.frame.width - 2*kCollectionViewGutterWidth) * 0.4) - 54
             }
         } else {
-            cell.menuTextViewHeight = 0.0
+            cell.menuTextViewHeight.constant = 0.0
+            cell.backgroundImageViewHeight.constant = ((collectionView.frame.width - 2*kCollectionViewGutterWidth) * 0.4) - 54
         }
+        cell.contentViewWidth.constant = view.frame.width - 2 * kCollectionViewGutterWidth
         
         return cell
     }
@@ -511,5 +515,14 @@ extension EateriesViewController: UIViewControllerPreviewingDelegate {
     
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
         show(viewControllerToCommit, sender: self)
+    }
+}
+
+extension String {
+    func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
+        
+        return ceil(boundingBox.height)
     }
 }
