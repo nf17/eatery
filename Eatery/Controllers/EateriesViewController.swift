@@ -154,6 +154,8 @@ class EateriesViewController: UIViewController, MenuButtonsDelegate, CLLocationM
                 self.eateries = DataManager.sharedInstance.eateries
                 self.processEateries()
                 self.collectionView.reloadData()
+                self.collectionView.collectionViewLayout.invalidateLayout()
+                self.collectionView.layoutSubviews()
                 self.animateCollectionView()
                 self.pushPreselectedEatery()
             }
@@ -300,6 +302,8 @@ class EateriesViewController: UIViewController, MenuButtonsDelegate, CLLocationM
     func favoriteButtonPressed() {
         processEateries()
         collectionView.reloadData()
+        collectionView.collectionViewLayout.invalidateLayout()
+        collectionView.layoutSubviews()
     }
     
     func eatery(for indexPath: IndexPath) -> Eatery {
@@ -385,6 +389,7 @@ extension EateriesViewController: UICollectionViewDataSource {
                 }
                 cell.menuTextView.attributedText = attributedString
                 cell.menuTextViewHeight.constant = height + 20
+                cell.backgroundImageViewHeight.constant = 0
             } else {
                 cell.menuTextView.text = nil
                 cell.menuTextViewHeight.constant = 0.0
@@ -431,6 +436,8 @@ extension EateriesViewController: UISearchBarDelegate {
         searchBar.text = ""
         processEateries()
         collectionView.reloadData()
+        collectionView.collectionViewLayout.invalidateLayout()
+        collectionView.layoutSubviews()
         searchBar.resignFirstResponder()
         searchBar.setShowsCancelButton(false, animated: true)
     }
@@ -438,6 +445,8 @@ extension EateriesViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         processEateries()
         collectionView.reloadData()
+        collectionView.collectionViewLayout.invalidateLayout()
+        collectionView.layoutSubviews()
         searchBar.setShowsCancelButton(false, animated: true)
         searchBar.resignFirstResponder()
     }
@@ -454,7 +463,9 @@ extension EateriesViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.processEateries()
-        self.collectionView.reloadData()
+        collectionView.reloadData()
+        collectionView.collectionViewLayout.invalidateLayout()
+        collectionView.layoutSubviews()
     }
     
     
@@ -495,6 +506,8 @@ extension EateriesViewController: FilterBarDelegate {
         self.filters = filters
         processEateries()
         collectionView.reloadData()
+        collectionView.collectionViewLayout.invalidateLayout()
+        collectionView.layoutSubviews()
     }
 }
 

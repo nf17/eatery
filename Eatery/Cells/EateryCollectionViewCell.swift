@@ -17,7 +17,6 @@ class EateryCollectionViewCell: UICollectionViewCell {
     var menuTextView = UITextView()
     var menuTextViewHeight: NSLayoutConstraint!
     var contentViewWidth: NSLayoutConstraint!
-    var contentViewHeight: NSLayoutConstraint!
     var backgroundImageViewHeight: NSLayoutConstraint!
     var paymentImageViews = [UIImageView]()
     var paymentContainer = UIView()
@@ -41,7 +40,6 @@ class EateryCollectionViewCell: UICollectionViewCell {
         contentViewWidth = contentView.widthAnchor.constraint(equalToConstant: 0)
         contentViewWidth.isActive = true
         contentView.translatesAutoresizingMaskIntoConstraints = false
-
         
         backgroundImageViewHeight = backgroundImageView.heightAnchor.constraint(equalToConstant: 0)
         backgroundImageViewHeight.isActive = true
@@ -107,10 +105,6 @@ class EateryCollectionViewCell: UICollectionViewCell {
         
         menuTextView.text = nil
         menuTextView.textContainerInset = UIEdgeInsets(top: 10.0, left: 6.0, bottom: 10.0, right: 6.0)
-        
-        
-        contentViewHeight = contentView.heightAnchor.constraint(equalToConstant: backgroundImageView.frame.height + infoContainer.frame.height + menuTextView.frame.height)
-        contentViewHeight.isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
