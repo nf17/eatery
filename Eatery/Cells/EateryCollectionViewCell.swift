@@ -23,6 +23,9 @@ class EateryCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        if hasAmbiguousLayout {
+            print ("ambigous layout")
+        }
         
         contentView.addSubview(backgroundImageView)
         contentView.addSubview(infoContainer)
@@ -44,6 +47,7 @@ class EateryCollectionViewCell: UICollectionViewCell {
         backgroundImageViewHeight = backgroundImageView.heightAnchor.constraint(equalToConstant: 0)
         backgroundImageViewHeight.isActive = true
         backgroundImageView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundImageView.contentMode = .scaleAspectFill
         
         backgroundImageView.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
@@ -85,7 +89,7 @@ class EateryCollectionViewCell: UICollectionViewCell {
         
         paymentContainer.snp.makeConstraints { (make) in
             make.trailing.equalToSuperview().offset(-10)
-            make.top.equalToSuperview().offset(-10)
+            make.top.equalToSuperview().offset(10)
         }
         
         menuTextView.snp.makeConstraints { (make) in
@@ -105,6 +109,43 @@ class EateryCollectionViewCell: UICollectionViewCell {
         
         menuTextView.text = nil
         menuTextView.textContainerInset = UIEdgeInsets(top: 10.0, left: 6.0, bottom: 10.0, right: 6.0)
+        
+        let paymentImageRight = UIImageView()
+        let paymentImageMiddle = UIImageView()
+        let paymentImageLeft = UIImageView()
+        
+        paymentContainer.addSubview(paymentImageRight)
+        paymentContainer.addSubview(paymentImageMiddle)
+        paymentContainer.addSubview(paymentImageLeft)
+        
+        paymentImageRight.snp.makeConstraints { (make) in
+            make.trailing.equalToSuperview()
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.height.equalTo(20)
+            make.width.equalTo(20)
+            make.leading.equalTo(paymentImageMiddle.snp.trailing).offset(5)
+        }
+        
+        paymentImageMiddle.snp.makeConstraints { (make) in
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.height.equalTo(20)
+            make.width.equalTo(20)
+            make.leading.equalTo(paymentImageLeft.snp.trailing).offset(5)
+        }
+        
+        paymentImageLeft.snp.makeConstraints { (make) in
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.height.equalTo(20)
+            make.width.equalTo(20)
+            make.leading.equalToSuperview().offset(5)
+        }
+        
+        paymentImageViews.append(paymentImageRight)
+        paymentImageViews.append(paymentImageMiddle)
+        paymentImageViews.append(paymentImageLeft)
     }
     
     required init?(coder aDecoder: NSCoder) {

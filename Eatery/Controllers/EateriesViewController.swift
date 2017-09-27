@@ -155,7 +155,7 @@ class EateriesViewController: UIViewController, MenuButtonsDelegate, CLLocationM
                 self.processEateries()
                 self.collectionView.reloadData()
                 self.collectionView.collectionViewLayout.invalidateLayout()
-                self.collectionView.layoutSubviews()
+                self.collectionView.setNeedsDisplay()
                 self.animateCollectionView()
                 self.pushPreselectedEatery()
             }
@@ -303,7 +303,7 @@ class EateriesViewController: UIViewController, MenuButtonsDelegate, CLLocationM
         processEateries()
         collectionView.reloadData()
         collectionView.collectionViewLayout.invalidateLayout()
-        collectionView.layoutSubviews()
+        collectionView.setNeedsDisplay()
     }
     
     func eatery(for indexPath: IndexPath) -> Eatery {
@@ -388,12 +388,12 @@ extension EateriesViewController: UICollectionViewDataSource {
                     NSLog("Error in handling regex")
                 }
                 cell.menuTextView.attributedText = attributedString
-                cell.menuTextViewHeight.constant = height + 20
+                cell.menuTextViewHeight.constant = height + kCollectionViewGutterWidth * 2
                 cell.backgroundImageViewHeight.constant = 0
             } else {
                 cell.menuTextView.text = nil
                 cell.menuTextViewHeight.constant = 0.0
-                cell.backgroundImageViewHeight.constant = ((collectionView.frame.width - 2*kCollectionViewGutterWidth) * 0.4) - 54
+                cell.backgroundImageViewHeight.constant = 0
             }
         } else {
             cell.menuTextViewHeight.constant = 0.0
@@ -437,7 +437,7 @@ extension EateriesViewController: UISearchBarDelegate {
         processEateries()
         collectionView.reloadData()
         collectionView.collectionViewLayout.invalidateLayout()
-        collectionView.layoutSubviews()
+        collectionView.setNeedsDisplay()
         searchBar.resignFirstResponder()
         searchBar.setShowsCancelButton(false, animated: true)
     }
@@ -446,7 +446,7 @@ extension EateriesViewController: UISearchBarDelegate {
         processEateries()
         collectionView.reloadData()
         collectionView.collectionViewLayout.invalidateLayout()
-        collectionView.layoutSubviews()
+        collectionView.setNeedsDisplay()
         searchBar.setShowsCancelButton(false, animated: true)
         searchBar.resignFirstResponder()
     }
@@ -465,7 +465,7 @@ extension EateriesViewController: UISearchBarDelegate {
         self.processEateries()
         collectionView.reloadData()
         collectionView.collectionViewLayout.invalidateLayout()
-        collectionView.layoutSubviews()
+        collectionView.setNeedsDisplay()
     }
     
     
@@ -507,7 +507,7 @@ extension EateriesViewController: FilterBarDelegate {
         processEateries()
         collectionView.reloadData()
         collectionView.collectionViewLayout.invalidateLayout()
-        collectionView.layoutSubviews()
+        collectionView.setNeedsDisplay()
     }
 }
 
