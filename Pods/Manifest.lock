@@ -17,7 +17,7 @@ DEPENDENCIES:
   - Fabric
   - Hero
   - Kingfisher
-  - SnapKit
+  - SnapKit (~> 3.2.0)
   - SwiftyJSON
 
 EXTERNAL SOURCES:
@@ -39,6 +39,6 @@ SPEC CHECKSUMS:
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: ca1f7df221a61d45f0bbc8062300af58c891d3bf
+PODFILE CHECKSUM: 4e993f8a51a58ec30fba6e27aa75743c34c2dde9
 
 COCOAPODS: 1.2.1

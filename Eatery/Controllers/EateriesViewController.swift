@@ -375,6 +375,10 @@ extension EateriesViewController: UICollectionViewDataSource {
         cell.infoContainer.heroID = Animation.infoContainer.id(eatery: eatery)
 
         if searchBar.text != "" {
+            for imageView in cell.paymentImageViews {
+                imageView.isHidden = true
+            }
+            cell.backgroundImageViewHeight.constant = 0
             if let names = searchedMenuItemNames[eatery] {
                 let baseString = names.joined(separator: "\n")
                 let height = baseString.height(withConstrainedWidth: view.frame.width - 20, font: UIFont.systemFont(ofSize: 11))
@@ -389,11 +393,9 @@ extension EateriesViewController: UICollectionViewDataSource {
                 }
                 cell.menuTextView.attributedText = attributedString
                 cell.menuTextViewHeight.constant = height + kCollectionViewGutterWidth * 2
-                cell.backgroundImageViewHeight.constant = 0
             } else {
                 cell.menuTextView.text = nil
                 cell.menuTextViewHeight.constant = 0.0
-                cell.backgroundImageViewHeight.constant = 0
             }
         } else {
             cell.menuTextViewHeight.constant = 0.0
