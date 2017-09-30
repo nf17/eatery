@@ -90,13 +90,13 @@ class BRBViewController: UIViewController, BRBConnectionErrorHandler, BRBLoginVi
         }
     }
     
-    func userClickedProfileButton() {
+    @objc func userClickedProfileButton() {
         let brbVc = BRBAccountSettingsViewController()
         brbVc.delegate = self
         navigationController?.pushViewController(brbVc, animated: true)
     }
 
-    func timer(timer: Timer) {
+    @objc func timer(timer: Timer) {
         
         time = time + 0.1
         
@@ -124,7 +124,7 @@ class BRBViewController: UIViewController, BRBConnectionErrorHandler, BRBLoginVi
         }
     }
     
-    func historyTimer(timer: Timer) {
+    @objc func historyTimer(timer: Timer) {
         time = time + 0.1
         
         if time >= timeout {
@@ -268,9 +268,9 @@ class BRBViewController: UIViewController, BRBConnectionErrorHandler, BRBLoginVi
             let attributedDesc = NSMutableAttributedString(string: " "+diningHistory[indexPath.row].description, attributes:nil)
             let newLineLoc = (attributedDesc.string as NSString).range(of: "\n").location
             if newLineLoc != NSNotFound {
-                attributedDesc.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 12), range: NSRange(location: newLineLoc + 1, length: attributedDesc.string.characters.count - newLineLoc - 1))
-                attributedDesc.addAttribute(NSForegroundColorAttributeName, value: UIColor.init(white: 0.40, alpha: 1), range: NSRange(location: newLineLoc + 1, length: attributedDesc.string.characters.count - newLineLoc - 1))
-                attributedDesc.addAttribute(NSFontAttributeName, value: UIFont.boldSystemFont(ofSize: 16), range: NSRange(location: 0, length: newLineLoc))
+                attributedDesc.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 12), range: NSRange(location: newLineLoc + 1, length: attributedDesc.string.characters.count - newLineLoc - 1))
+                attributedDesc.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.init(white: 0.40, alpha: 1), range: NSRange(location: newLineLoc + 1, length: attributedDesc.string.characters.count - newLineLoc - 1))
+                attributedDesc.addAttribute(NSAttributedStringKey.font, value: UIFont.boldSystemFont(ofSize: 16), range: NSRange(location: 0, length: newLineLoc))
             }
             
             cell.leftLabel.attributedText = attributedDesc
@@ -301,7 +301,7 @@ class BRBViewController: UIViewController, BRBConnectionErrorHandler, BRBLoginVi
         return historyHeader!
     }
 
-    func openFullHistory() { // when View More is tapped
+    @objc func openFullHistory() { // when View More is tapped
         if hasLoadedMore == 0.0 {
             hasLoadedMore = 0.5
             

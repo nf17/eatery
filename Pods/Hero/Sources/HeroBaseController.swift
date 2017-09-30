@@ -93,7 +93,7 @@ public class HeroBaseController: NSObject {
       }
     }
   }
-  func displayUpdate(_ link: CADisplayLink) {
+    @objc func displayUpdate(_ link: CADisplayLink) {
     if transitioning, duration > 0, let beginTime = beginTime {
       let timePassed = CACurrentMediaTime() - beginTime
 
@@ -289,7 +289,7 @@ internal extension HeroBaseController {
 
   /// Actually animate the views
   /// subclass should call `prepareForTransition` & `prepareForAnimation` before calling `animate`
-  func animate() {
+  @objc func animate() {
     guard transitioning else { fatalError() }
     for (currentFromViews, currentToViews) in animatingViews {
       // auto hide all animated views
@@ -333,7 +333,7 @@ internal extension HeroBaseController {
     self.beginTime = CACurrentMediaTime() - timePassed
   }
 
-  func complete(finished: Bool) {
+  @objc func complete(finished: Bool) {
     guard transitioning else { fatalError() }
     for animator in animators {
       animator.clean()

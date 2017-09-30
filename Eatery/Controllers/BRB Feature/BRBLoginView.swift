@@ -174,7 +174,7 @@ class BRBLoginView: UIView, UITextFieldDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func privacyStatementButtonPressed() {
+    @objc func privacyStatementButtonPressed() {
         addSubview(privacyStatementTextView)
         privacyStatementTextView.snp.makeConstraints { make in
             make.edges.equalTo(self)
@@ -188,13 +188,13 @@ class BRBLoginView: UIView, UITextFieldDelegate {
         }
     }
     
-    func dismissPrivacyStatement(sender: UIButton) {
+    @objc func dismissPrivacyStatement(sender: UIButton) {
         sender.removeFromSuperview()
         privacyStatementTextView.snp.removeConstraints()
         privacyStatementTextView.removeFromSuperview()
     }
     
-    func keepMeSignedIn() { // toggle
+    @objc func keepMeSignedIn() { // toggle
         if perpetualLoginButton.isSelected {
             perpetualLoginButton.isSelected = false
         } else {
@@ -202,7 +202,7 @@ class BRBLoginView: UIView, UITextFieldDelegate {
         }
     }
     
-    func login() {
+    @objc func login() {
         
         let netid = (netidTextField.text ?? "").lowercased()
         let password = passwordTextField.text ?? ""

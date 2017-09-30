@@ -1,0 +1,7 @@
+osx_image: xcode9
+language: swift
+xcode_workspace: Eatery.xcworkspace
+xcode_scheme: Eatery
+install: pod install
+notifications:
+  slack: cornellappdev:lztjgTNbsWkJY6GLY587e9mB

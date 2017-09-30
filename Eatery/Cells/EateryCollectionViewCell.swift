@@ -100,9 +100,9 @@ class EateryCollectionViewCell: UICollectionViewCell {
         }
         
         
-        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: UIFontWeightSemibold)
-        distanceLabel.font = UIFont.systemFont(ofSize: 11, weight: UIFontWeightMedium)
-        statusLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFontWeightSemibold)
+        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.semibold)
+        distanceLabel.font = UIFont.systemFont(ofSize: 11, weight: UIFont.Weight.medium)
+        statusLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.semibold)
         timeLabel.font = UIFont.systemFont(ofSize: 12)
         
         infoContainer.backgroundColor = .white
