@@ -229,12 +229,12 @@ class BRBViewController: UIViewController, BRBConnectionDelegate, BRBLoginViewDe
     }
 
     func updateHistory(with entries: [HistoryEntry]) {
-        self.diningHistory = entries
-
-        self.tableView.reloadData()
-
-        tableView.tableFooterView = nil
-        activityIndicatorView.removeFromSuperview()
+        DispatchQueue.main.async {
+            self.diningHistory = entries
+            self.tableView.reloadData()
+            self.tableView.tableFooterView = nil
+            self.activityIndicatorView.removeFromSuperview()
+        }
     }
     
     func showSafariVC() {
